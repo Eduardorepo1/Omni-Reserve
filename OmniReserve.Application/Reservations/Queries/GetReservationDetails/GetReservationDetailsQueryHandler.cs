@@ -28,7 +28,7 @@ public class GetReservationDetailsQueryHandler
         return new ReservationDetailsDto
         {
             Id = reservation.Id,
-            UserEmail = reservation.User.Email,
+            UserEmail = reservation.User.Email.Value,
             RoomNumber = reservation.Room.RoomNumber,
             StartDate = reservation.CheckInDate,
             EndDate = reservation.CheckOutDate
