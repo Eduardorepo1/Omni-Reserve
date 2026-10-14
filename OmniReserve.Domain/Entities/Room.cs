@@ -5,10 +5,15 @@ namespace OmniReserve.Domain.Entities;
 public class Room
 {
     public Guid Id { get; private set; }
-    public string RoomNumber { get; private set; }
+    public string RoomNumber { get; private set; } = string.Empty;
     public RoomType Type { get; private set; }
     public decimal PricePerNight { get; private set; }
     public bool IsAvailable { get; private set; }
+
+    // Constructor para Entity Framework Core
+    private Room()
+    {
+    }
 
     public Room(string roomNumber, RoomType roomType, decimal pricePerNight)
     {
