@@ -10,6 +10,9 @@ public class Room
     public decimal PricePerNight { get; private set; }
     public bool IsAvailable { get; private set; }
 
+    // Relación: una habitación puede tener muchas reservaciones
+    public ICollection<Reservation> Reservations { get; private set; } = new List<Reservation>();
+
     // Constructor para Entity Framework Core
     private Room()
     {

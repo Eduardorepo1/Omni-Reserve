@@ -23,5 +23,25 @@ public class ReservationConfiguration : IEntityTypeConfiguration<Reservation>
 
         builder.Property(x => x.CheckOutDate)
             .IsRequired();
+
+        builder.Property(x => x.TotalPrice)
+            .HasPrecision(18, 2);
+
+        builder.Property(x => x.Status)
+            .HasConversion<string>();
+
+        // Relación Reservation -> Room
+        // Una habitación puede tener muchas reservaciones
+        builder.HasOne(x => x.Room)
+            .WithMany(x => x.Reservations)
+            .HasForeignKey(x => x.RoomId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // Relación Reservation -> User
+        // Un usuario puede tener muchas reservaciones
+        builder.HasOne(x => x.User)
+            .WithMany(x => x.Reservations)
+            .HasForeignKey(x => x.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }
