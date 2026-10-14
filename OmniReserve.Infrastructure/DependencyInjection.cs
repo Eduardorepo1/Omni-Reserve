@@ -14,6 +14,7 @@ public static class DependencyInjection
         IConfiguration configuration)
     {
         services.AddScoped<IRoomRepository, RoomRepository>();
+        services.AddScoped<IReservationRepository, ReservationRepository>();
 
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseNpgsql(
