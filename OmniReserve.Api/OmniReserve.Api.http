@@ -1,6 +1,2 @@
-@OmniReserve.Api_HostAddress = http://localhost:5255
-
-GET {{OmniReserve.Api_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
+# Las peticiones de prueba se agregaran conforme se creen los endpoints.
+# Mientras tanto la API se puede probar desde Swagger (/swagger).
