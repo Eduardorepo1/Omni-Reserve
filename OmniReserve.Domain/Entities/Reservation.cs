@@ -13,6 +13,10 @@ public class Reservation
     public decimal TotalPrice { get; private set; }
     public ReservationStatus Status { get; private set; }
 
+    // Propiedades de navegación
+    public Room Room { get; private set; } = null!;
+    public User User { get; private set; } = null!;
+
     public Reservation(
         Guid userId,
         Guid roomId,
