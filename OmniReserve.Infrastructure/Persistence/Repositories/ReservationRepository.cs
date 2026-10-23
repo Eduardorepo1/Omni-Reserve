@@ -29,4 +29,10 @@ public class ReservationRepository : IReservationRepository
                            r.CheckInDate < end &&
                            r.CheckOutDate > start);
     }
+
+    public async Task AddAsync(Reservation reservation)
+    {
+        await _context.Reservations.AddAsync(reservation);
+        await _context.SaveChangesAsync();
+    }
 }
