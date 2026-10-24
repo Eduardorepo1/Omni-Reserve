@@ -20,6 +20,11 @@ public static class DependencyInjection
 
         services.AddScoped<IPasswordHasher, BCryptPasswordHasher>();
 
+        services.Configure<JwtSettings>(
+            configuration.GetSection("JwtSettings"));
+
+        services.AddScoped<IJwtProvider, JwtProvider>();
+
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseNpgsql(
                 configuration.GetConnectionString("OmniReserveDb")));
