@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using OmniReserve.Application.Common.Interfaces;
 using OmniReserve.Infrastructure.Persistence;
 using OmniReserve.Infrastructure.Persistence.Repositories;
+using OmniReserve.Infrastructure.Security;
 
 namespace OmniReserve.Infrastructure;
 
@@ -15,6 +16,9 @@ public static class DependencyInjection
     {
         services.AddScoped<IRoomRepository, RoomRepository>();
         services.AddScoped<IReservationRepository, ReservationRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
+
+        services.AddScoped<IPasswordHasher, BCryptPasswordHasher>();
 
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseNpgsql(
