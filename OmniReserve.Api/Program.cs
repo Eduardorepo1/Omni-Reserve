@@ -8,7 +8,9 @@ using OmniReserve.Infrastructure;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddApplication();
+
 builder.Services.AddInfrastructure(builder.Configuration);
+
 builder.Services.AddControllers();
 
 builder.Services.AddSwaggerGen(options =>
@@ -70,9 +72,11 @@ var app = builder.Build();
 app.UseMiddleware<OmniReserve.Api.Middlewares.GlobalExceptionHandlingMiddleware>();
 
 app.UseSwagger();
+
 app.UseSwaggerUI();
 
 app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapControllers();
