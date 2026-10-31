@@ -26,12 +26,19 @@ public class GlobalExceptionHandlingMiddleware
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Ha ocurrido una excepción no controlada: {Message}", ex.Message);
+            // Mostrar el error completo, incluyendo la excepción interna.
+            _logger.LogError(
+                ex,
+                "ERROR COMPLETO: {Error}",
+                ex.ToString());
+
             await HandleExceptionAsync(context, ex);
         }
     }
 
-    private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
+    private static async Task HandleExceptionAsync(
+        HttpContext context,
+        Exception exception)
     {
         context.Response.ContentType = "application/problem+json";
 
@@ -50,7 +57,9 @@ public class GlobalExceptionHandlingMiddleware
 
             problemDetails.Extensions.Add("errors", validationEx.Errors);
 
-            await context.Response.WriteAsync(JsonSerializer.Serialize(problemDetails));
+            await context.Response.WriteAsync(
+                JsonSerializer.Serialize(problemDetails));
+
             return;
         }
         else if (exception is DomainException domainEx)
@@ -64,11 +73,14 @@ public class GlobalExceptionHandlingMiddleware
                 Detail = domainEx.Message
             };
 
-            await context.Response.WriteAsync(JsonSerializer.Serialize(problemDetails));
+            await context.Response.WriteAsync(
+                JsonSerializer.Serialize(problemDetails));
+
             return;
         }
 
-        context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+        context.Response.StatusCode =
+            StatusCodes.Status500InternalServerError;
 
         problemDetails = new ProblemDetails
         {
@@ -77,6 +89,7 @@ public class GlobalExceptionHandlingMiddleware
             Detail = exception.Message
         };
 
-        await context.Response.WriteAsync(JsonSerializer.Serialize(problemDetails));
+        await context.Response.WriteAsync(
+            JsonSerializer.Serialize(problemDetails));
     }
 }
