@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OmniReserve.Api.Requests;
 using OmniReserve.Application.Reservations.Commands.CreateReservation;
+using OmniReserve.Application.Reservations.Queries.GetAllReservations;
+using OmniReserve.Domain.Constants;
 
 namespace OmniReserve.Api.Controllers;
 
@@ -41,6 +43,15 @@ public class ReservationsController : ControllerBase
         };
 
         var result = await _sender.Send(command);
+
+        return Ok(result);
+    }
+
+    [HttpGet("all")]
+    [Authorize(Roles = Roles.Admin)]
+    public async Task<IActionResult> GetAllReservations()
+    {
+        var result = await _sender.Send(new GetAllReservationsQuery());
 
         return Ok(result);
     }
