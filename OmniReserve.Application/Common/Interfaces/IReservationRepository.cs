@@ -9,4 +9,6 @@ public interface IReservationRepository
     Task<bool> IsRoomAvailableAsync(Guid roomId, DateTime start, DateTime end);
 
     Task AddAsync(Reservation reservation);
+
+    Task<List<Reservation>> GetAllAsync();
 }

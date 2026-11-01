@@ -35,4 +35,12 @@ public class ReservationRepository : IReservationRepository
         await _context.Reservations.AddAsync(reservation);
         await _context.SaveChangesAsync();
     }
+
+    public async Task<List<Reservation>> GetAllAsync()
+    {
+        return await _context.Reservations
+            .Include(r => r.User)
+            .Include(r => r.Room)
+            .ToListAsync();
+    }
 }
