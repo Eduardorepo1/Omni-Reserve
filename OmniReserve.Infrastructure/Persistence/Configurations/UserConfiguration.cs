@@ -34,5 +34,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.Property(x => x.PasswordHash)
             .IsRequired();
+
+        builder.Property(x => x.Role)
+            .IsRequired()
+            .HasMaxLength(50)
+            .HasDefaultValue("Client");
     }
 }

@@ -12,8 +12,8 @@ using OmniReserve.Infrastructure.Persistence;
 namespace OmniReserve.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20261014224902_ConfigureEmailAddress")]
-    partial class ConfigureEmailAddress
+    [Migration("20261101004916_AddUserRole")]
+    partial class AddUserRole
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -113,8 +113,12 @@ namespace OmniReserve.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Role")
-                        .HasColumnType("integer");
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasDefaultValue("Client");
 
                     b.HasKey("Id");
 

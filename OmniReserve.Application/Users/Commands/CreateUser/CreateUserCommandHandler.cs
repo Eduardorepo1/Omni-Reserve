@@ -35,15 +35,17 @@ public class CreateUserCommandHandler
         if (string.IsNullOrWhiteSpace(request.Password))
             throw new ArgumentException("La contraseña es obligatoria.");
 
+        // Encriptar la contraseña antes de guardar al usuario.
         string passwordHash = _passwordHasher.Hash(request.Password);
 
+        // Crear el usuario con el rol Client por defecto.
         var user = new User(
             request.FirstName,
             request.LastName,
             new EmailAddress(request.Email),
-            passwordHash,
-            request.Role);
+            passwordHash);
 
+        // Guardar el usuario en la base de datos.
         await _userRepository.AddAsync(user);
 
         return user.Id;

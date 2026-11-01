@@ -1,4 +1,4 @@
-using OmniReserve.Domain.Enums;
+using OmniReserve.Domain.Constants;
 using OmniReserve.Domain.ValueObjects;
 
 namespace OmniReserve.Domain.Entities;
@@ -10,17 +10,29 @@ public class User
     public string LastName { get; private set; }
     public EmailAddress Email { get; private set; }
     public string PasswordHash { get; private set; }
-    public Role Role { get; private set; }
+    public string Role { get; private set; }
 
     // Relación: un usuario puede tener muchas reservaciones
     public ICollection<Reservation> Reservations { get; private set; } = new List<Reservation>();
 
-    public User(string firstName, string lastName, EmailAddress email, string passwordHash, Role role)
+    public User(
+        string firstName,
+        string lastName,
+        EmailAddress email,
+        string passwordHash,
+        string role = Roles.Client)
     {
-        if (string.IsNullOrWhiteSpace(firstName)) throw new ArgumentNullException(nameof(firstName));
-        if (string.IsNullOrWhiteSpace(lastName)) throw new ArgumentNullException(nameof(lastName));
-        if (email is null) throw new ArgumentNullException(nameof(email));
-        if (string.IsNullOrWhiteSpace(passwordHash)) throw new ArgumentNullException(nameof(passwordHash));
+        if (string.IsNullOrWhiteSpace(firstName))
+            throw new ArgumentNullException(nameof(firstName));
+
+        if (string.IsNullOrWhiteSpace(lastName))
+            throw new ArgumentNullException(nameof(lastName));
+
+        if (email is null)
+            throw new ArgumentNullException(nameof(email));
+
+        if (string.IsNullOrWhiteSpace(passwordHash))
+            throw new ArgumentNullException(nameof(passwordHash));
 
         Id = Guid.NewGuid();
         FirstName = firstName;
