@@ -1,5 +1,6 @@
 using MediatR;
 using OmniReserve.Application.Common.Interfaces;
+using OmniReserve.Domain.Exceptions;
 
 namespace OmniReserve.Application.Users.Commands.LoginUser;
 
@@ -27,20 +28,20 @@ public class LoginUserCommandHandler
         if (string.IsNullOrWhiteSpace(request.Email) ||
             string.IsNullOrWhiteSpace(request.Password))
         {
-            throw new Exception("Credenciales inválidas");
+            throw new InvalidCredentialsException();
         }
 
         var user = await _userRepository.GetByEmailAsync(request.Email);
 
         if (user is null)
-            throw new Exception("Credenciales inválidas");
+            throw new InvalidCredentialsException();
 
         bool passwordIsValid = _passwordHasher.Verify(
             request.Password,
             user.PasswordHash);
 
         if (!passwordIsValid)
-            throw new Exception("Credenciales inválidas");
+            throw new InvalidCredentialsException();
 
         return _jwtProvider.Generate(user);
     }
