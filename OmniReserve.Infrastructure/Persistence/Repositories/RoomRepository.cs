@@ -37,4 +37,12 @@ internal class RoomRepository : IRoomRepository
             .FromSql($"SELECT * FROM \"Rooms\" WHERE \"Type\" = {roomType}")
             .ToListAsync();
     }
+
+    // Obtener todas las habitaciones
+    public async Task<List<Room>> GetAllAsync()
+    {
+        return await _context.Rooms
+            .AsNoTracking()
+            .ToListAsync();
+    }
 }
