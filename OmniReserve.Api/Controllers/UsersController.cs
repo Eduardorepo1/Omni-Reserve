@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using OmniReserve.Application.Users.Commands.CreateUser;
 using OmniReserve.Application.Users.Commands.LoginUser;
 
@@ -28,6 +29,7 @@ public class UsersController : ControllerBase
     }
 
     [AllowAnonymous]
+    [EnableRateLimiting("AuthLimit")]
     [HttpPost("Login")]
     public async Task<IActionResult> Login(
         [FromBody] LoginUserCommand command)

@@ -22,15 +22,24 @@ builder.Services.AddStackExchangeRedisCache(options =>
         builder.Configuration.GetConnectionString("RedisConnection");
 });
 
-// Configuración Rate Limiting Global
+// Configuración Rate Limiting Global y Auth
 builder.Services.AddRateLimiter(options =>
 {
     options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
 
+    // Política global: 100 peticiones por minuto
     options.AddFixedWindowLimiter("GlobalLimit", limiterOptions =>
     {
         limiterOptions.PermitLimit = 100;
         limiterOptions.Window = TimeSpan.FromMinutes(1);
+        limiterOptions.QueueLimit = 0;
+    });
+
+    // Política de autenticación: 3 intentos cada 30 segundos
+    options.AddFixedWindowLimiter("AuthLimit", limiterOptions =>
+    {
+        limiterOptions.PermitLimit = 3;
+        limiterOptions.Window = TimeSpan.FromSeconds(30);
         limiterOptions.QueueLimit = 0;
     });
 });
