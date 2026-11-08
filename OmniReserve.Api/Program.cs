@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using System.Text;
+using System.Threading.RateLimiting;
 using OmniReserve.Application;
 using OmniReserve.Infrastructure;
 
@@ -18,6 +20,19 @@ builder.Services.AddStackExchangeRedisCache(options =>
 {
     options.Configuration =
         builder.Configuration.GetConnectionString("RedisConnection");
+});
+
+// Configuración Rate Limiting Global
+builder.Services.AddRateLimiter(options =>
+{
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+
+    options.AddFixedWindowLimiter("GlobalLimit", limiterOptions =>
+    {
+        limiterOptions.PermitLimit = 100;
+        limiterOptions.Window = TimeSpan.FromMinutes(1);
+        limiterOptions.QueueLimit = 0;
+    });
 });
 
 builder.Services.AddSwaggerGen(options =>
@@ -81,6 +96,10 @@ app.UseMiddleware<OmniReserve.Api.Middlewares.GlobalExceptionHandlingMiddleware>
 app.UseSwagger();
 
 app.UseSwaggerUI();
+
+app.UseRouting();
+
+app.UseRateLimiter();
 
 app.UseAuthentication();
 

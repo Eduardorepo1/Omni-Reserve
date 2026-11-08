@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.RateLimiting;
 using OmniReserve.Application.Rooms.Commands.CreateRoom;
 using OmniReserve.Application.Rooms.Queries.GetRoomById;
 using OmniReserve.Application.Rooms.Queries.GetAllRooms;
@@ -8,6 +9,7 @@ using OmniReserve.Application.Rooms.Queries.GetAllRooms;
 namespace OmniReserve.Api.Controllers;
 
 [Authorize]
+[EnableRateLimiting("GlobalLimit")]
 [ApiController]
 [Route("api/[controller]")]
 public class RoomsController : ControllerBase
