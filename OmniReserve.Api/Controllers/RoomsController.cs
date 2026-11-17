@@ -36,6 +36,11 @@ public class RoomsController : ControllerBase
 
         var result = await _sender.Send(query);
 
+        if (result is null)
+        {
+            return NotFound();
+        }
+
         return Ok(result);
     }
 
