@@ -4,7 +4,7 @@ using OmniReserve.Application.Common.Interfaces;
 namespace OmniReserve.Application.Rooms.Queries.GetRoomById;
 
 public class GetRoomByIdQueryHandler
-    : IRequestHandler<GetRoomByIdQuery, RoomResponseDto>
+    : IRequestHandler<GetRoomByIdQuery, RoomResponseDto?>
 {
     private readonly IRoomRepository _roomRepository;
 
@@ -13,7 +13,7 @@ public class GetRoomByIdQueryHandler
         _roomRepository = roomRepository;
     }
 
-    public async Task<RoomResponseDto> Handle(
+    public async Task<RoomResponseDto?> Handle(
         GetRoomByIdQuery request,
         CancellationToken cancellationToken)
     {
@@ -21,7 +21,7 @@ public class GetRoomByIdQueryHandler
 
         if (room is null)
         {
-            throw new Exception("Room not found");
+            return null;
         }
 
         return new RoomResponseDto
