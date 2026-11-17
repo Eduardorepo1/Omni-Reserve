@@ -1,10 +1,11 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.AspNetCore.TestHost;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using OmniReserve.Infrastructure.Persistence;
 
 namespace OmniReserve.IntegrationTests;
 
@@ -12,9 +13,38 @@ public class OmniReserveWebApplicationFactory : WebApplicationFactory<Program>
 {
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        builder.ConfigureTestServices(services =>
+        builder.ConfigureServices(services =>
         {
-            // Autenticación falsa para las pruebas
+            // Eliminar la configuración de PostgreSQL.
+            var dbContextOptions = services.SingleOrDefault(
+                descriptor =>
+                    descriptor.ServiceType ==
+                    typeof(DbContextOptions<ApplicationDbContext>));
+
+            if (dbContextOptions != null)
+            {
+                services.Remove(dbContextOptions);
+            }
+
+            // Eliminar configuraciones anteriores de EF Core.
+            var optionsConfigurationDescriptors = services
+                .Where(descriptor =>
+                    descriptor.ServiceType.Name.Contains(
+                        "IDbContextOptionsConfiguration"))
+                .ToList();
+
+            foreach (var descriptor in optionsConfigurationDescriptors)
+            {
+                services.Remove(descriptor);
+            }
+
+            // Crear una base de datos temporal para las pruebas.
+            var dbName = Guid.NewGuid().ToString();
+
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseInMemoryDatabase(dbName));
+
+            // Mantener la autenticación falsa.
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme =
@@ -28,10 +58,9 @@ public class OmniReserveWebApplicationFactory : WebApplicationFactory<Program>
 
             }).AddScheme<AuthenticationSchemeOptions, TestAuthHandler>(
                 TestAuthHandler.AuthenticationScheme,
-                options => { }
-            );
+                options => { });
 
-            // Sustituir Redis por una caché en memoria
+            // Sustituir Redis por caché en memoria.
             services.RemoveAll<IDistributedCache>();
 
             services.AddDistributedMemoryCache();
