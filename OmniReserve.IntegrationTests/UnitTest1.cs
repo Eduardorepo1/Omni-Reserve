@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Net.Http.Json;
 using System.Text;
 
 namespace OmniReserve.IntegrationTests;
@@ -49,5 +50,23 @@ public class RoomsControllerTests : IClassFixture<OmniReserveWebApplicationFacto
 
         // Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task CreateRoom_ReturnsCreatedResponse()
+    {
+        // Arrange
+        var room = new
+        {
+            RoomNumber = "999",
+            Type = 2,
+            PricePerNight = 500
+        };
+
+        // Act
+        var response = await _client.PostAsJsonAsync("/api/rooms", room);
+
+        // Assert
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 }
