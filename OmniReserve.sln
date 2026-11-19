@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OmniReserve.Infrastructure"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OmniReserve.IntegrationTests", "OmniReserve.IntegrationTests\OmniReserve.IntegrationTests.csproj", "{3C71003E-5D0D-49A0-9FFD-5A882D28A06F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OmniReserve.UnitTests", "OmniReserve.UnitTests\OmniReserve.UnitTests.csproj", "{052F73AC-F876-4E96-8A76-5E7BBC3EF521}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,18 @@ Global
 		{3C71003E-5D0D-49A0-9FFD-5A882D28A06F}.Release|x64.Build.0 = Release|Any CPU
 		{3C71003E-5D0D-49A0-9FFD-5A882D28A06F}.Release|x86.ActiveCfg = Release|Any CPU
 		{3C71003E-5D0D-49A0-9FFD-5A882D28A06F}.Release|x86.Build.0 = Release|Any CPU
+		{052F73AC-F876-4E96-8A76-5E7BBC3EF521}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{052F73AC-F876-4E96-8A76-5E7BBC3EF521}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{052F73AC-F876-4E96-8A76-5E7BBC3EF521}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{052F73AC-F876-4E96-8A76-5E7BBC3EF521}.Debug|x64.Build.0 = Debug|Any CPU
+		{052F73AC-F876-4E96-8A76-5E7BBC3EF521}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{052F73AC-F876-4E96-8A76-5E7BBC3EF521}.Debug|x86.Build.0 = Debug|Any CPU
+		{052F73AC-F876-4E96-8A76-5E7BBC3EF521}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{052F73AC-F876-4E96-8A76-5E7BBC3EF521}.Release|Any CPU.Build.0 = Release|Any CPU
+		{052F73AC-F876-4E96-8A76-5E7BBC3EF521}.Release|x64.ActiveCfg = Release|Any CPU
+		{052F73AC-F876-4E96-8A76-5E7BBC3EF521}.Release|x64.Build.0 = Release|Any CPU
+		{052F73AC-F876-4E96-8A76-5E7BBC3EF521}.Release|x86.ActiveCfg = Release|Any CPU
+		{052F73AC-F876-4E96-8A76-5E7BBC3EF521}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
