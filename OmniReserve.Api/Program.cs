@@ -15,19 +15,16 @@ builder.Services.AddInfrastructure(builder.Configuration);
 
 builder.Services.AddControllers();
 
-// Configuración Redis
 builder.Services.AddStackExchangeRedisCache(options =>
 {
     options.Configuration =
         builder.Configuration.GetConnectionString("RedisConnection");
 });
 
-// Configuración Rate Limiting Global y Auth
 builder.Services.AddRateLimiter(options =>
 {
     options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
 
-    // Política global: 100 peticiones por minuto
     options.AddFixedWindowLimiter("GlobalLimit", limiterOptions =>
     {
         limiterOptions.PermitLimit = 100;
@@ -35,7 +32,6 @@ builder.Services.AddRateLimiter(options =>
         limiterOptions.QueueLimit = 0;
     });
 
-    // Política de autenticación: 3 intentos cada 30 segundos
     options.AddFixedWindowLimiter("AuthLimit", limiterOptions =>
     {
         limiterOptions.PermitLimit = 3;
@@ -46,6 +42,11 @@ builder.Services.AddRateLimiter(options =>
 
 builder.Services.AddSwaggerGen(options =>
 {
+    var xmlFilename = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
+
+    options.IncludeXmlComments(
+        Path.Combine(AppContext.BaseDirectory, xmlFilename));
+
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
@@ -62,11 +63,11 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-// Configuración JWT
+// Configuracion JWT
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 
 var secret = jwtSettings["Secret"]
-    ?? throw new InvalidOperationException("No se encontró JwtSettings:Secret");
+    ?? throw new InvalidOperationException("No se encontro JwtSettings:Secret");
 
 builder.Services
     .AddAuthentication(options =>
@@ -118,5 +119,4 @@ app.MapControllers();
 
 app.Run();
 
-// Permite utilizar WebApplicationFactory en las pruebas de integración.
 public partial class Program { }
